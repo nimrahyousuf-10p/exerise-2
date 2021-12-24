@@ -53,7 +53,6 @@ const Home = () => {
                   <Card.Body>
                     <Card.Title>{el.title}</Card.Title>
                     <Card.Text>{el.snippet}</Card.Text>
-
                     <Button variant="primary" href={el.link}>
                       Read more here
                     </Button>
