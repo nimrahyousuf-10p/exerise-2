@@ -1,45 +1,75 @@
 import axios from "axios";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, Card } from "react-bootstrap";
-import * as NewsService from "../../api/serp-api/fetchData";
+import { FlexContainer } from "../../components/Common";
+import Input from "../../components/Input";
 const News = () => {
-  useEffect(() => {
-    const firstCall = async () => {
-      const res = await fetchNewsData();
-      console.log(res);
-    };
-    firstCall();
-  }, []);
-  const fetchNewsData = async () => {
-    const res = await axios(
-      "https://serpapi.com/search.json?q=Trump&tbm=nws&location=Dallas&api_key=de3741f14d58f96507b5fb7dbdda52445b1d449b3895b99610bbb6f53d667530"
+  const [data, setData] = useState([]);
+  const [search, setSearch] = useState("");
+  const getResult = async () => {
+    const newsApiCall = await axios.get(
+      `https://codeeeee.herokuapp.com/news?q=${search}`
     );
-    return res.data;
+    setData(newsApiCall.data);
   };
+  // useEffect(() => {
+  //   const firstCall = async () => {
+  //     const newsApiCall = await axios.get(
+  //       `https://codeeeee.herokuapp.com/news?q=pakistan`
+  //     );
+  //     setData(newsApiCall.data);
+  //   };
+  //   firstCall();
+  // }, []);
   return (
     <>
-      <div style={{ display: "flex" }}>
-        <Card style={{ width: "18rem" }}>
-          <Card.Img variant="top" src="" />
-          <Card.Body>
-            <Card.Title>Card Title</Card.Title>
-            <Card.Text>
-              Some quick example text to build on the card title and make up the
-              bulk of the card's content.
-            </Card.Text>
-            <Button variant="primary">Go somewhere</Button>
-          </Card.Body>
-        </Card>
-        <Card style={{ width: "18rem" }}>
-          <Card.Img variant="top" src="" />
-          <Card.Body>
-            <Card.Title>Card Title</Card.Title>
-            <Card.Text>
-              Some quick example text to build on the card title and make up the
-              bulk of the card's content.
-            </Card.Text>
-            <Button variant="primary">Go somewhere</Button>
-          </Card.Body>
+      <FlexContainer width="100%" height="40vh" justify="center" align="center">
+        <Input
+          id="input"
+          inputType="search"
+          type="text"
+          label="Search"
+          placeholder="Enter Text..."
+          value={search}
+          onChange={(e) => {
+            setSearch(e.target.value);
+          }}
+        />
+        <FlexContainer height="1vh">
+          <Button
+            onClick={() => {
+              getResult();
+            }}
+          >
+            Search
+          </Button>
+        </FlexContainer>
+      </FlexContainer>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <Card>
+          {data.length ? (
+            data.map((el) => {
+              return (
+                <div style={{ display: "flex" }}>
+                  <Card.Img
+                    style={{ width: "200px" }}
+                    variant="top"
+                    src={el.thumbnail}
+                  />
+                  <Card.Body>
+                    <Card.Title>{el.title}</Card.Title>
+                    <Card.Text>{el.snippet}</Card.Text>
+                    <Card.Text>Posted:{el.date}</Card.Text>
+                    <Button variant="primary" href={el.link}>
+                      Read more here
+                    </Button>
+                  </Card.Body>
+                </div>
+              );
+            })
+          ) : (
+            <></>
+          )}
         </Card>
       </div>
     </>

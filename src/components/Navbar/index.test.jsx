@@ -23,8 +23,4 @@ describe("Navigation component", () => {
     const link = wrapper.find("#nav2").text();
     expect(link).toEqual("News");
   });
-  //   it("home should navigate to /", () => {
-  //     const link = wrapper.find("#nav1");
-  //     expect(link).toHaveBeenCalledWith();
-  //   });
 });

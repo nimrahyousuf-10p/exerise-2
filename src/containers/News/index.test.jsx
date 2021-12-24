@@ -12,8 +12,4 @@ describe("News component", () => {
   it("should render News component", () => {
     expect(wrapper.exists()).toBe(true);
   });
-  it("should contain input field", () => {
-    // const input = mount(<Input />);
-    // expect(input).toEqual("Enter text ...");
-  });
 });
